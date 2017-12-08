@@ -1,12 +1,10 @@
 #!/usr/bin/env python
-import itchat
 import pika
 import Constants
 import Task
 
 
 def comsume():
-
     user_pwd = pika.PlainCredentials('service', '#service!')
 
     connection = pika.BlockingConnection(pika.ConnectionParameters(host='172.21.62.101', credentials=user_pwd))

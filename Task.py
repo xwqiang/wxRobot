@@ -2,21 +2,32 @@ import threading
 
 import itchat
 
+import MediaType
 import comsumer
 import json
 
+from util import imageDownloader
+
 
 def login():
-    itchat.auto_login(hotReload=True,picDir='/ky/xuwuqiang/qrcode.png' )
+    itchat.auto_login(hotReload=True, enableCmdQR=2)
+
+
 
 
 def callback(ch, method, properties, body):
     data = json.loads(body.decode("utf-8"))
-    name = data['name']
+    name = data['username']
     message = data['messsage']
+    mediaType = data['mediaType']
+    print('receive data:',data)
     if name and message:
-        itchat.send_msg(msg=message, toUserName=name)
-        print(" [x] %r" % body)
+        if mediaType == MediaType.Text:
+            itchat.send_msg(msg=message, toUserName=name)
+            print(" [x] %r" % body)
+        if mediaType == MediaType.Picture:
+            pic = imageDownloader.downLoadImg(message)
+            itchat.send_image(pic,toUserName=name)
 
 
 def loop():

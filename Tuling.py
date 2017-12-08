@@ -17,17 +17,13 @@ class TulingWXBot:
             self.tuling_key = cf.get('main', 'key')
         except Exception:
             pass
-        print('tuling_key:', self.tuling_key)
 
     def tuling_auto_reply(self, uid, msg):
         if self.tuling_key:
             url = "http://www.tuling123.com/openapi/api"
             user_id = uid.replace('@', '')[:30]
-            print("userid",user_id)
             body = {'key': self.tuling_key, 'info': msg.encode('utf8'), 'userid': user_id}
-            print(body)
             r = requests.post(url, data=body)
-            print(r)
             respond = json.loads(r.text)
             result = ''
             if respond['code'] == 100000:
@@ -97,4 +93,7 @@ class TulingWXBot:
                     self.send_msg_by_uid(reply, msg['user']['id'])
 
 
+if __name__ == '__main__':
+    reply = TulingWXBot().tuling_auto_reply('111aaa2121',"你好")
+    print(reply)
 
